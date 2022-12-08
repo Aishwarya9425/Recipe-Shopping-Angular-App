@@ -1,60 +1,29 @@
+import { LoggingService } from "./logging.service";
+import { sharedModule } from "./shared/shared.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-
+import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from "./app.component";
-import { HeaderComponent } from "./header/header.component";
-import { RecipesComponent } from "./recipes/recipes.component";
-import { RecipeListComponent } from "./recipes/recipe-list/recipe-list.component";
-import { RecipeDetailComponent } from "./recipes/recipe-detail/recipe-detail.component";
-import { RecipeItemComponent } from "./recipes/recipe-list/recipe-item/recipe-item.component";
-import { ShoppingListComponent } from "./shopping-list/shopping-list.component";
-import { ShoppingEditComponent } from "./shopping-list/shopping-edit/shopping-edit.component";
-import { DropdownDirective } from "./shared/dropdown.directive";
-import { ShoppingListService } from "./shopping-list/shopping-list.service";
 import { AppRoutingModule } from "./app-routing.module";
-import { RecipeStartComponent } from "./recipes/recipe-start/recipe-start.component";
-import { RecipeEditComponent } from "./recipes/recipe-edit/recipe-edit.component";
-import { RecipeService } from "./recipes/recipe.service";
-import { AuthComponent } from "./auth/auth.component";
-import { LoadingSpinnerComponent } from "./shared/loading-spinner/loading-spinner.component";
-import { AuthInterServ } from "./auth/auth-interceptor.service";
-import { AlertComponent } from "./shared/alert/alert.component";
-import { PlaceHolderDirective } from "./shared/placeholder/placeholder.directive";
+import { HeaderComponent } from "./header/header.component";
+import { CoreModule } from "./core.module";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    RecipesComponent,
-    RecipeListComponent,
-    RecipeDetailComponent,
-    RecipeItemComponent,
-    ShoppingListComponent,
-    ShoppingEditComponent,
-    DropdownDirective,
-    RecipeStartComponent,
-    RecipeEditComponent,
-    AuthComponent,
-    LoadingSpinnerComponent,
-    AlertComponent,
-    PlaceHolderDirective,
-  ],
+  declarations: [AppComponent, HeaderComponent],
   imports: [
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    //feature modules
+    // RecipesModule, -- lazy loading so dont add here
+    // ShoppingModule,-- lazy loading so dont add here
+    sharedModule,
+    CoreModule,
+    //AuthModule,-- lazy loading so dont add here
   ],
-  providers: [
-    ShoppingListService,
-    RecipeService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterServ, multi: true },
-  ],
+  providers: [LoggingService],
+  // just declaring here same inst, if diff instance add this serv in shopping module
+  //not recommended to have multiple instances of serv, try to use @Inje or only in app module
   bootstrap: [AppComponent],
-  //w/o selector or route when u create a comp manually , list here
-  entryComponents: [AlertComponent],
 })
 export class AppModule {}
